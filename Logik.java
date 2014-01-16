@@ -94,7 +94,8 @@ public class Logik
 	    return wwd;
     }
     
-    public static void addAnnotations(List<String> imgs, YKILUI frame) { 	
+    public static void addAnnotations(List<String> imgs, YKILUI frame) {
+    	frame.map.getModel().clearList();
     	for (String img : imgs) {
     		try {
     			Position pos = extractEXIF(img);
