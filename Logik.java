@@ -17,6 +17,7 @@ import gov.nasa.worldwind.event.SelectEvent;
 import gov.nasa.worldwind.event.SelectListener;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.layers.AnnotationLayer;
+import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.RenderableLayer;
 import gov.nasa.worldwind.render.GlobeAnnotation;
 import gov.nasa.worldwind.render.PointPlacemark;
@@ -97,7 +98,11 @@ public class Logik
     }
     
     public static void addAnnotations(List<String> imgs, YKILUI frame) {
-    	frame.map.getModel().getLayers().clear();
+        for(Layer l : frame.map.getModel().getLayers()) {
+        	if(l instanceof AnnotationLayer || l instanceof RenderableLayer) {
+        		frame.map.getModel().getLayers().remove(l);
+        	}
+        }
     	for (String img : imgs) {
     		try {
     			Position pos = extractEXIF(img);
