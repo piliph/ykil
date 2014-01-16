@@ -10,6 +10,8 @@ import com.sun.opengl.util.Screenshot;
 import gov.nasa.worldwind.BasicModel;
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.awt.WorldWindowGLCanvas;
+import gov.nasa.worldwind.event.SelectEvent;
+import gov.nasa.worldwind.event.SelectListener;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.layers.AnnotationLayer;
 import gov.nasa.worldwind.layers.RenderableLayer;
@@ -74,6 +76,21 @@ public class Logik
         WorldWindowGLCanvas wwd = new WorldWindowGLCanvas();
         wwd.setPreferredSize(new java.awt.Dimension(1000, 800));
         wwd.setModel(new BasicModel());
+        
+	    this.wwd.addSelectListener(new SelectListener(){
+	    	public void selected(SelectEvent event){
+	    		if (event.getEventAction().equals(SelectEvent.LEFT_CLICK) && event.hasObjects() && event.getTopObject() instanceof GlobeAnnotation){
+	    			if (((GlobeAnnotation)event.getTopObject()).getAttributes().getScale() == 1) {
+		    			((GlobeAnnotation)event.getTopObject()).getAttributes().setScale(5);
+	    				((GlobeAnnotation)event.getTopObject()).setAlwaysOnTop(true);
+	    			}
+	    			else {
+	    				((GlobeAnnotation)event.getTopObject()).getAttributes().setScale(1);
+	    				((GlobeAnnotation)event.getTopObject()).setAlwaysOnTop(false);
+	    			}
+	    		}
+	    	}	
+	    });
     	
     	for (String img : imgs) {
     		try {
