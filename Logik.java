@@ -72,7 +72,7 @@ public class Logik
 		}
 	}
     
-    public static Component getMap(List<String> imgs) {    	
+    public static WorldWindowGLCanvas getMap() {    	
         WorldWindowGLCanvas wwd = new WorldWindowGLCanvas();
         wwd.setPreferredSize(new java.awt.Dimension(1000, 800));
         wwd.setModel(new BasicModel());
@@ -91,7 +91,10 @@ public class Logik
 	    		}
 	    	}	
 	    });
-    	
+	    return wwd;
+    }
+    
+    public static void addAnnotations(List<String> imgs, JFrame frame) { 	
     	for (String img : imgs) {
     		try {
     			Position pos = extractEXIF(img);
@@ -112,8 +115,8 @@ public class Logik
     			ga.setMaxActiveAltitude(1081941);
     			al.addAnnotation(ga);
 
-    			wwd.getModel().getLayers().add(layer);
-    			wwd.getModel().getLayers().add(al);
+    			frame.map.getModel().getLayers().add(layer);
+    			frame..getModel().getLayers().add(al);
     			
     		}
     		catch (NullPointerException e) {
@@ -121,7 +124,6 @@ public class Logik
     		}
     	}
     	
-    	return wwd;
     }
     
     public static void exportMap(WorldWindowGLCanvas wwd, String outfile) {
