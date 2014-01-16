@@ -1,3 +1,5 @@
+package com.yaacoubi.klinkhammer;
+
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -95,7 +97,7 @@ public class Logik
     }
     
     public static void addAnnotations(List<String> imgs, YKILUI frame) {
-    	frame.map.getModel().clearList();
+    	frame.map.getModel().getLayers().clear();
     	for (String img : imgs) {
     		try {
     			Position pos = extractEXIF(img);
