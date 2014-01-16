@@ -94,7 +94,7 @@ public class Logik
 	    return wwd;
     }
     
-    public static void addAnnotations(List<String> imgs, JFrame frame) { 	
+    public static void addAnnotations(List<String> imgs, YKILUI frame) { 	
     	for (String img : imgs) {
     		try {
     			Position pos = extractEXIF(img);
@@ -116,7 +116,7 @@ public class Logik
     			al.addAnnotation(ga);
 
     			frame.map.getModel().getLayers().add(layer);
-    			frame..getModel().getLayers().add(al);
+    			frame.map.getModel().getLayers().add(al);
     			
     		}
     		catch (NullPointerException e) {
