@@ -133,16 +133,4 @@ public class Logik
     	}
     	
     }
-    
-    public static void exportMap(WorldWindowGLCanvas wwd, String outfile) {
-    	wwd.getContext().makeCurrent();
-    	java.awt.image.BufferedImage image = Screenshot.readToBufferedImage(wwd.getWidth(), wwd.getHeight());
-    	wwd.getContext().release();
-    	File out = new File(outfile);
-    	try {
-			ImageIO.write(image, "jpg", out);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    }
 }
