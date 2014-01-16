@@ -33,9 +33,15 @@ public class Logik
     	}
     	for (String img : imgs) {
     		try {
-				fw.append(extractEXIF(img).toString());
+				fw.append(extractEXIF(img).toString() + " " + img + System.getProperty( "line.separator" ));
 			} catch (IOException e) {
 				e.printStackTrace();
+			} catch (NullPointerException e) {
+				try {
+					fw.append("Keine GPS-Daten in " + img + System.getProperty( "line.separator" ));
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
     	}
     	if(fw != null) {
