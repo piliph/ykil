@@ -2,6 +2,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.io.*;
+import java.util.*;
 
 import javax.imageio.ImageIO;
 
@@ -22,13 +23,14 @@ import gov.nasa.worldwind.render.PointPlacemarkAttributes;
 public class Logik
 {
     
-    public static void exportEXIF(String[] imgs, String outfile) {
+    public static void exportEXIF(List<String> imgs, File outfile) {
     	FileWriter fw = null;
     	try
     	{
     	  fw = new FileWriter( outfile );
     	  fw.write("");
     	}
+ 
     	catch ( IOException e ) {
     	  System.err.println( "Konnte Datei nicht erstellen" );
     	  return;
@@ -70,14 +72,12 @@ public class Logik
 		}
 	}
     
-    public static Component getMap() {
-    	String[] imgs = {"images/essen.jpg", "images/juelich.jpg", "images/nogpsdata1.jpg"};
-    	
+    public static Component getMap(List<String> imgs) {    	
         WorldWindowGLCanvas wwd = new WorldWindowGLCanvas();
         wwd.setPreferredSize(new java.awt.Dimension(1000, 800));
         wwd.setModel(new BasicModel());
         
-	    this.wwd.addSelectListener(new SelectListener(){
+	    wwd.addSelectListener(new SelectListener(){
 	    	public void selected(SelectEvent event){
 	    		if (event.getEventAction().equals(SelectEvent.LEFT_CLICK) && event.hasObjects() && event.getTopObject() instanceof GlobeAnnotation){
 	    			if (((GlobeAnnotation)event.getTopObject()).getAttributes().getScale() == 1) {
