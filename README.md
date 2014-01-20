@@ -1,6 +1,4 @@
-ykil
+YKIL - Yaacoubi Klinkhammer Image Locator
 ====
 
-SE Projekt
-test
-was geht ab
+This project was made possible by <a href="http://www.fh-aachen.de/menschen/j.hoffmann.html">Prof. Dr. rer. nat. Jobst Hoffmann</a>
