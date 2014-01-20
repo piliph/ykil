@@ -18,3 +18,11 @@ Build Path:<br /><br />
 	<li>worldwindx.jar</li>
 	<li>javaxt-core.jar</li>
 </ul>
+If you just want to use YKIL, just add your libraries to the specified path or put your needed libraries<br />
+in the same folder as the program.<br />
+If you are on Linux you will have to use the <a href="http://klinkhammer.yaacoubi.com/lib/unix/">.so Libraries</a>.<br />
+If you are on Windows you will have to use the <a href="http://klinkhammer.yaacoubi.com/lib/win/">.dll Binaries</a>.<br />
+If you are on Mac you will have to use the <a href="http://klinkhammer.yaacoubi.com/lib/mac/">.jnilib Libraries</a>.<br /><br />
+You will get further instructions on the <a href="http://klinkhammer.yaacoubi.com">Website</a>.<br /><br /><br /><br />
+
+<center>Copyright 2014 YKIL. All rights reserved.</center>
