@@ -2,19 +2,24 @@ package com.yaacoubi.klinkhammer;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileSystemView;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.TreeNode;
+import javax.swing.tree.*;
 
 /**
  * @author m.yaacoubi
  */
 public class FileTreePanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * File system view.
 	 */
@@ -26,6 +31,11 @@ public class FileTreePanel extends JPanel {
 	 * @author m.yaacoubi
 	 */
 	private static class FileTreeCellRenderer extends DefaultTreeCellRenderer {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		/**
 		 * Icon cache to speed the rendering.
 		 */
@@ -188,6 +198,11 @@ public class FileTreePanel extends JPanel {
 					this.parent == null, this);
 		}
 
+		@SuppressWarnings("unused")
+		public File getChildFileAt(int childIndex) {
+			return this.children[childIndex];
+		}
+
 		/*
 		 * (non-Javadoc)
 		 * 
@@ -230,6 +245,96 @@ public class FileTreePanel extends JPanel {
 		}
 	}
 
+	public int getSelectionCount()
+	{
+		return tree.getSelectionCount();
+	}
+
+	public int[] getSelectionRows()
+	{
+		return tree.getSelectionRows();
+	}
+
+	public File[] getSelectedFiles()
+	{
+		List<File> list = new Vector<File>();
+		int[] selectedRows = tree.getSelectionRows();
+		FileTreeNode ftp = null;
+		for(int selectedRow : selectedRows)
+		{
+			ftp = (FileTreeNode)tree.getPathForRow(selectedRow).getLastPathComponent();
+			list.add(ftp.file);
+		}
+		Object[] objArr = list.toArray();
+		return Arrays.copyOf(objArr, objArr.length, File[].class);
+	}
+
+	public String[] getSelectedPaths()
+	{
+		List<String> list = new ArrayList<String>();
+		int[] selectedRows = tree.getSelectionRows();
+		FileTreeNode ftp = null;
+		for(int selectedRow : selectedRows)
+		{
+			ftp = (FileTreeNode)tree.getPathForRow(selectedRow).getLastPathComponent();
+			list.add(ftp.file.getPath());
+		}
+		Object[] objArr = list.toArray();
+		return Arrays.copyOf(objArr, objArr.length, String[].class);
+	}
+
+	public File[] getValidSelectedImagesPaths()
+	{
+		return getValidSelectedImagesPaths(getSelectedFiles());
+	}
+
+	private boolean continueRecursion = true;
+
+	public File[] getValidSelectedImagesPaths(File[] list)
+	{
+		continueRecursion = true;
+		List<File> retList = new ArrayList<File>();
+		String fileName = null;
+		String filePath = null;
+		String[] fileParts = null;
+		if(list != null)
+		{
+			for(File file : list)
+			{
+				if(!continueRecursion) break; 
+				fileName = file.getName();
+				filePath = file.getPath();
+				fileParts = filePath.split("\\.");
+				if(file.isFile() && fileParts.length > 1 && isValidImage(fileParts[fileParts.length-1]))
+					retList.add(file);
+				else if(file.isDirectory())
+				{
+					int answer = JOptionPane.showConfirmDialog(null, "Do you want to add all valid pictures in the folder " + fileName + " to the list?", "Action for folder " + fileName + " required", JOptionPane.YES_NO_CANCEL_OPTION);
+					if(answer == JOptionPane.YES_OPTION)
+						retList.addAll(Arrays.asList(getValidSelectedImagesPaths(file.listFiles())));
+					else if(answer == JOptionPane.CANCEL_OPTION)
+						continueRecursion = false;
+				}
+			}
+		}
+		Object[] objArr = retList.toArray();
+		return Arrays.copyOf(objArr, objArr.length, File[].class);
+	}
+
+	private boolean isValidImage(String ext)
+	{
+		String[] validExt = {"jpg", "jpeg", "tif", "tiff"};
+
+		ext = ext.trim().toLowerCase();
+		for(String tmpExt : validExt) if(ext.equals(tmpExt.toLowerCase())) return true;
+		return false;
+	}
+
+	public void addTreeSelectionListener(javax.swing.event.TreeSelectionListener tsl)
+	{
+		tree.addTreeSelectionListener(tsl);
+	}
+
 	/**
 	 * The file tree.
 	 */
@@ -239,27 +344,25 @@ public class FileTreePanel extends JPanel {
 	 * Creates the file tree panel.
 	 */
 	public FileTreePanel() {
-		this.setLayout(new BorderLayout());
+		setLayout(new BorderLayout());
 
 		File[] roots = File.listRoots();
 		FileTreeNode rootTreeNode = new FileTreeNode(roots);
-		this.tree = new JTree(rootTreeNode);
-		this.tree.setCellRenderer(new FileTreeCellRenderer());
-		this.tree.setRootVisible(false);
+		tree = new JTree(rootTreeNode);
+		tree.setCellRenderer(new FileTreeCellRenderer());
+		tree.setRootVisible(false);
 		final JScrollPane jsp = new JScrollPane(this.tree);
 		jsp.setBorder(new EmptyBorder(0, 0, 0, 0));
-		this.add(jsp, BorderLayout.CENTER);
-	}
-
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				JFrame frame = new JFrame("File tree");
-				frame.setSize(500, 400);
-				frame.setLocationRelativeTo(null);
-				frame.add(new FileTreePanel());
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.setVisible(true);
+		add(jsp, BorderLayout.CENTER);
+		tree.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_F2)	//	Rename function
+				{
+					if(tree.getSelectionCount() == 1)
+						JOptionPane.showInputDialog(null, "Rename to:");
+					else
+						JOptionPane.showMessageDialog(null, "Cannot rename " + tree.getSelectionCount() + " files/folders.");
+				}
 			}
 		});
 	}

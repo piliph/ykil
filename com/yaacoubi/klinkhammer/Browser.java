@@ -25,7 +25,11 @@ public class Browser
             Desktop desktop = Desktop.getDesktop();
             try {
                 desktop.browse(new URI(url));
-            } catch (IOException | URISyntaxException e) {
+            } catch (IOException e) {
+            	// TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            catch(URISyntaxException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }

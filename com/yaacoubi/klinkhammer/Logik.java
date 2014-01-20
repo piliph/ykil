@@ -1,6 +1,6 @@
 package com.yaacoubi.klinkhammer;
 
-import java.awt.Component;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.io.*;
@@ -75,7 +75,7 @@ public class Logik
 		}
 	}
     
-    public static WorldWindowGLCanvas getMap() {    	
+    public static WorldWindowGLCanvas getMap() throws java.lang.UnsatisfiedLinkError {    	
         WorldWindowGLCanvas wwd = new WorldWindowGLCanvas();
         wwd.setPreferredSize(new java.awt.Dimension(1000, 800));
         wwd.setModel(new BasicModel());
@@ -94,6 +94,7 @@ public class Logik
 	    		}
 	    	}	
 	    });
+
 	    return wwd;
     }
     
@@ -109,7 +110,7 @@ public class Logik
     			javaxt.io.Image tmp = new javaxt.io.Image(img);
     			PointPlacemark pm = new PointPlacemark(pos);
     			PointPlacemarkAttributes pa = new PointPlacemarkAttributes();
-    			pm.setAttributes(pa);          
+    			pm.setAttributes(pa);
     			RenderableLayer layer = new RenderableLayer();
     			layer.addRenderable(pm);
 
@@ -121,6 +122,7 @@ public class Logik
     			ga.getAttributes().setSize(new Dimension((int)(tmp.getWidth()*factor), (int)(tmp.getHeight()*factor)));
     			ga.getAttributes().setImageRepeat(AVKey.REPEAT_NONE);
     			ga.setMaxActiveAltitude(1081941);
+    			ga.getAttributes().setBackgroundColor(Color.WHITE);
     			al.addAnnotation(ga);
 
     			frame.map.getModel().getLayers().add(layer);
@@ -132,5 +134,17 @@ public class Logik
     		}
     	}
     	
+    }
+    
+    public static void exportMap(WorldWindowGLCanvas wwd, String outfile) {
+    	wwd.getContext().makeCurrent();
+    	java.awt.image.BufferedImage image = Screenshot.readToBufferedImage(wwd.getWidth(), wwd.getHeight());
+    	wwd.getContext().release();
+    	File out = new File(outfile);
+    	try {
+			ImageIO.write(image, "jpg", out);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 }
