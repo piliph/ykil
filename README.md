@@ -25,4 +25,4 @@ If you are on Windows you will have to use the <a href="http://klinkhammer.yaaco
 If you are on Mac you will have to use the <a href="http://klinkhammer.yaacoubi.com/lib/mac/">.jnilib Libraries</a>.<br /><br />
 You will get further instructions on the <a href="http://klinkhammer.yaacoubi.com">Website</a>.<br /><br /><br /><br />
 
-<em>Copyright 2014 YKIL. All rights reserved.</em>
+<em style="color:blue;">Copyright 2014 YKIL. All rights reserved.</em>
