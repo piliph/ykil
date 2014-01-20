@@ -1,7 +1,7 @@
 YKIL<br />Yaacoubi Klinkhammer Image Locator
 ====
 
-This project (YKIL - /waɪkɪl/) was made possible by <a href="http://www.fh-aachen.de/menschen/j.hoffmann.html">Prof. Dr. rer. nat. Jobst Hoffmann</a>
+This project <em>(YKIL - /waɪkɪl/)</em> was made possible by <a href="http://www.fh-aachen.de/menschen/j.hoffmann.html">Prof. Dr. rer. nat. Jobst Hoffmann</a>
 due to the Software Engineering project of the University of Aachen (FH-Aachen) in Forschungszentrum J&uuml;lich.
 
 <br />
